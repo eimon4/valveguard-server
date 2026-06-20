@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – ValveGuard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            iot: {
+              900: '#0A0F1C',
+              800: '#111827',
+              700: '#1F2937',
+              accent: '#0EA5E9',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      background-color: #0A0F1C;
+      color: #F9FAFB;
+    }
+
+    .glass-nav {
+      background: rgba(10, 15, 28, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-card {
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.75rem;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col relative">
+
+  <nav class="glass-nav fixed w-full z-50 px-6 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <span class="font-bold text-xl tracking-tight text-white">ValveGuard</span>
+    </a>
+    <a href="register.html" class="text-sm font-medium text-gray-400 hover:text-white transition-colors">Register</a>
+  </nav>
+
+  <main class="flex-grow flex items-center justify-center p-6 pt-24 relative z-10">
+    <div class="w-full max-w-md glass-card p-8">
+      <h1 class="text-3xl font-bold mb-2 text-white">Welcome Back</h1>
+      <p class="text-gray-400 text-sm mb-8">Sign in to access your IoT control dashboard.</p>
+
+      <div id="alert-box" class="hidden mb-6 p-4 text-sm border rounded-lg font-medium"></div>
+
+      <form id="login-form">
+        <div class="space-y-5">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
+            <input id="email" type="email" required
+              class="w-full bg-gray-800 border border-gray-700 p-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 rounded-md transition-colors" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+            <div class="relative">
+              <input id="password" type="password" required
+                class="w-full bg-gray-800 border border-gray-700 p-3 pr-10 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 rounded-md transition-colors" />
+              <button type="button" id="toggle-password"
+                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-300 transition-colors">
+                <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" class="rounded border-gray-700 bg-gray-800 text-cyan-500 focus:ring-cyan-500" />
+              <span class="text-sm text-gray-400">Remember me</span>
+            </label>
+            <a href="forgot-password.html" class="text-sm text-cyan-400 hover:text-cyan-300 transition-colors">Forgot password?</a>
+          </div>
+
+          <button id="login-btn" type="submit"
+            class="w-full bg-cyan-600 text-white p-3.5 font-semibold hover:bg-cyan-700 rounded-md transition-colors mt-4">
+            Sign In to Dashboard
+          </button>
+        </div>
+        
+        <p class="text-center text-gray-400 text-sm mt-6">
+          Don't have an account? <a href="register.html" class="text-white hover:text-cyan-400 transition-colors">Register here</a>
+        </p>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    (async () => {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) window.location.href = 'dashboard.html';
+    })();
+
+    setupPasswordToggle('password', 'eye-icon', 'toggle-password');
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn = document.getElementById('login-btn');
+
+      if (!email || !password) return showAlert('Required fields missing.');
+
+      btn.disabled = true;
+      btn.textContent = 'Wait...';
+
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) {
+        showAlert(error.message);
+        btn.disabled = false;
+        btn.textContent = 'Sign In';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    });
+  </script>
+</body>
+
+</html>

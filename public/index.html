@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ValveGuard – IoT Emergency Alert System</title>
+  <meta name="description" content="ValveGuard provides a cloud-connected platform for managing emergency contact configurations and integrating with ESP32-based safety devices." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            iot: {
+              900: '#0A0F1C',
+              800: '#111827',
+              700: '#1F2937',
+              accent: '#0EA5E9'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      background-color: #0A0F1C;
+      color: #F9FAFB;
+      overflow-x: hidden;
+    }
+
+    .glass-nav {
+      background: rgba(10, 15, 28, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-card {
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.75rem;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col relative">
+
+  <!-- Nav -->
+  <nav class="glass-nav fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <span class="font-bold text-xl tracking-tight text-white">ValveGuard</span>
+      </a>
+      <div class="space-x-4 text-sm font-medium">
+        <a href="login.html" class="text-gray-300 hover:text-white transition-colors">Login</a>
+        <a href="register.html" class="bg-cyan-600 text-white px-5 py-2.5 rounded-md hover:bg-cyan-700 transition-colors">Register</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Hero -->
+  <main class="flex-grow flex flex-col items-center justify-center px-6 pt-32 pb-20 relative z-10">
+    <div class="text-center max-w-4xl mx-auto">
+
+      
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight text-white">
+        Next-Gen Safety with ValveGuard
+      </h1>
+      
+      <p class="text-xl text-gray-300 mb-4 font-medium">
+        An IoT-powered emergency alert and monitoring solution.
+      </p>
+      
+      <p class="text-lg text-gray-400 mb-10 leading-relaxed max-w-2xl mx-auto">
+        ValveGuard provides a cloud-connected platform for managing emergency contact configurations and integrating seamlessly with ESP32-based safety devices.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="login.html" class="px-8 py-3 bg-cyan-600 text-white font-semibold rounded-md hover:bg-cyan-700 transition-colors">
+          Access Dashboard
+        </a>
+        <a href="register.html" class="px-8 py-3 glass-card text-white font-semibold rounded-md hover:bg-gray-800 transition-colors">
+          Create Account
+        </a>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto w-full mt-24">
+      
+      <div class="glass-card p-6">
+        <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-4 text-blue-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Cloud Management</h3>
+        <p class="text-sm text-gray-400 leading-relaxed">Secure, cloud-based platform for managing contact configurations globally.</p>
+      </div>
+
+      <div class="glass-card p-6">
+        <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-4 text-cyan-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">ESP32 Integration</h3>
+        <p class="text-sm text-gray-400 leading-relaxed">Direct hardware integration with ESP32-based gas detection safety devices.</p>
+      </div>
+
+      <div class="glass-card p-6">
+        <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-4 text-indigo-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Secure Authentication</h3>
+        <p class="text-sm text-gray-400 leading-relaxed">Enterprise-grade security ensuring your configuration data is always protected.</p>
+      </div>
+
+      <div class="glass-card p-6">
+        <div class="w-12 h-12 rounded-lg bg-gray-800 flex items-center justify-center mb-4 text-rose-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Emergency Alerts</h3>
+        <p class="text-sm text-gray-400 leading-relaxed">Instant SMS and cloud notifications triggered the moment a leak is detected.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="py-8 text-center text-sm text-gray-500 border-t border-white/10 mt-auto">
+
+    © 2026 ValveGuard IoT Platform. All rights reserved.
+  </footer>
+
+</body>
+
+</html>
